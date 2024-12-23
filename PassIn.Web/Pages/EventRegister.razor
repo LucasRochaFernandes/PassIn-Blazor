@@ -1,0 +1,66 @@
+﻿@page "/eventos/cadastro"
+
+@using PassIn.Communication.Requests
+@using PassIn.Web.Services.Event
+
+@inject EventAPIService eventAPIService
+@inject NavigationManager navigationManager
+
+<MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8" Justify="Justify.Center">
+
+    <MudText Class="mt-8" Typo="Typo.h4">Cadastro do Artista</MudText>
+
+    <MudForm>
+
+        <MudTextField Class="mt-4" T="string" Placeholder="Nome do Evento"
+        Variant="Variant.Outlined"
+        @bind-Value="eventName"
+        Required="true"
+        RequiredError="Campo obrigatório." />
+
+        <MudTextField Class="mt-4" T="string" Placeholder="Detalhes"
+        Variant="Variant.Outlined"
+        @bind-Value="eventDetails"
+        Lines="4"
+        Required="true"
+        RequiredError="Campo obrigatório." />
+
+        <MudNumericField 
+                Class="mt-4"
+                @bind-Value="eventMaxAttendees" 
+                Label="Número Máximo de Participantes" 
+                Variant="Variant.Outlined"
+                Required="true"
+                RequiredError="Campo obrigatório."
+                Min="0" Max="10" />
+
+        <div class="d-flex align-center justify-space-between mt-4">
+            <MudButton Variant="Variant.Filled"
+            Color="Color.Primary"
+            Class="ml-auto"
+            OnClick="() => Register()"            
+            >
+                Cadastrar
+            </MudButton>
+        </div>
+
+    </MudForm>
+</MudPaper>
+
+@code {
+    private string? eventName { get; set; }
+    private string? eventDetails { get; set; }
+    private int? eventMaxAttendees { get; set; }
+
+    private async Task Register()
+    {
+        var request = new RequestEventJson{
+            Title = eventName ?? String.Empty,
+            Details = eventDetails ?? String.Empty,
+            MaximumAttendees = eventMaxAttendees ?? 0
+        };
+        await eventAPIService.RegisterEvent(request);
+        navigationManager.NavigateTo("/eventos");
+    }
+
+}

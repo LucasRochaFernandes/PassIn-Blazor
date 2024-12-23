@@ -1,8 +1,5 @@
 # PassIn
 
-A Web API application with .NET
+A Web Full-Stack Application in ASP.NET
 
-## Tools
-- WEB API .NET Solution
-- Entity Framework Core
 

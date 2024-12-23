@@ -1,16 +1,27 @@
 ﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-        <article class="content px-4">
+<MudLayout>
+    <MudAppBar Style="background-color: #B3AC9E;" Fixed="true" Elevation="2">
+      <MudImage Src="logo.png" Width="80"></MudImage>
+    </MudAppBar>
+    <MudDrawer Style="background-color: #E0DED8"  Open="true" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu></NavMenu>
+    </MudDrawer>
+    <MudMainContent Class="main-content" Style="background-color: #F4F1EB; height: 100vh;">
+        <MudContainer Style="padding: 40px;">
             @Body
-        </article>
-    </main>
-</div>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private MudTheme currentTheme = new MudTheme()
+        {
+            PaletteDark = ScreendsoundPallete.CreatePallete
+        };
+}

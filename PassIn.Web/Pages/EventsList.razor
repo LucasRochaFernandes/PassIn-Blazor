@@ -1,0 +1,32 @@
+﻿@page "/eventos"
+
+@using PassIn.Communication.Responses
+@using PassIn.Web.Components;
+@using PassIn.Web.Services.Event
+
+@inject EventAPIService eventApiService
+
+<h3>Eventos</h3>
+<br />
+
+<MudGrid>
+    @foreach(var _event in events)
+    {
+        <MudItem xs="3">
+            <CardEvent EventJson=_event />
+        </MudItem>
+    }
+
+</MudGrid>
+
+
+@code {
+    private IList<ResponseEventJson> events = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        events = await eventApiService.GetAllEvents();
+    }
+
+ 
+}
