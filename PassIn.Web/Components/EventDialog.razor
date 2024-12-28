@@ -1,0 +1,36 @@
+﻿@using PassIn.Web.Services.Event
+@inject EventAPIService eventApiService
+
+
+<MudDialog>
+    <DialogContent>
+        <h3>@TitleEvent</h3>
+        <p>@DetailsEvent</p>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled"
+        @onclick="DeleteEvent"
+        Color="Color.Secondary"
+        Class="ml-3">
+            Deletar
+        </MudButton>
+        <MudButton Color="Color.Secondary" OnClick="CloseDialog">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+    [CascadingParameter] MudDialogInstance DialogInstance { get; set; } = default!;
+    [Parameter] public string TitleEvent { get; set; } = string.Empty;
+    [Parameter] public string DetailsEvent { get; set; } = string.Empty;
+    [Parameter] public Guid EventId { get; set; }
+
+    private void CloseDialog()
+    {
+        DialogInstance.Close();
+    }
+    private async Task DeleteEvent(){
+        await eventApiService.DeleteEvent(EventId);
+        DialogInstance.Close();
+    }
+}

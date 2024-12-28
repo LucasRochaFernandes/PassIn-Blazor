@@ -1,0 +1,13 @@
+﻿@page "/logout"
+
+@code {
+    [Inject] NavigationManager NavigationManager { get; set; }
+    [Inject] AuthAPIService AuthAPIService { get; set; }
+
+    protected override async void OnInitialized()
+    {
+        await AuthAPIService.LogOut();
+        NavigationManager.NavigateTo("/login");
+    }
+
+}

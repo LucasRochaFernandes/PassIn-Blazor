@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PassIn.Application.UseCases.Events;
+using PassIn.Application.UseCases.Events.Delete;
 using PassIn.Application.UseCases.Events.GetAll;
 using PassIn.Application.UseCases.Events.RegisterAttendee;
 using PassIn.Communication.Requests;
@@ -7,7 +9,9 @@ using PassIn.Communication.Responses;
 
 namespace PassIn.Api.Controllers;
 
+[ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class EventsController : ControllerBase
 {
 
@@ -54,5 +58,14 @@ public class EventsController : ControllerBase
     {
         var response = useCase.Execute();
         return Ok(response);
+    }
+
+    [HttpDelete]
+    [Route("{eventId}")]
+    [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+    public IActionResult Delete([FromRoute] Guid eventId, [FromServices] DeleteEventUseCase useCase)
+    {
+        useCase.Execute(eventId);
+        return Ok();
     }
 }

@@ -1,7 +1,12 @@
 ﻿@page "/home"
 
 <PageTitle>Home</PageTitle>
+ 
 
-<h1>Hello, world!</h1>
+<AuthorizeView>
+    <Authorized>
+        <p>Você está conectado como @context.User.Identity!.Name </p>
+    </Authorized>
+</AuthorizeView> 
 
-Welcome to your new app.
+

@@ -1,0 +1,53 @@
+﻿@page "/login"
+@layout EmptyLayout
+
+@inject AuthAPIService authApiService;
+
+<MudContainer Style="min-width: 100vw; min-height: 100vh; display: flex; justify-content: center; align-items: center; background-color: #E0DED8;">
+    <MudGrid>
+        <MudItem Style="flex-grow: 1;">
+            <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="d-flex flex-column justify-center align-center">
+                <MudPaper Class="px-8 pt-2 pb-4 mx-16 my-8" Justify="Justify.Center">
+                    <MudForm>
+
+                        <MudTextField T="string" Label="Email" @bind-Value="Email"
+                        Variant="Variant.Outlined" Class="my-4"
+                        Required="true" RequiredError="Email obrigatório!"
+                        OnlyValidateIfDirty="true" />
+
+                        <MudTextField T="string" Label="Senha" @bind-Value="Password"
+                        InputType="InputType.Password"
+                        Variant="Variant.Outlined" Class="my-4"
+                        Required="true" RequiredError="Senha obrigatória!"
+                        OnlyValidateIfDirty="true" />
+
+                        <MudButton Variant="Variant.Filled" Color="Color.Success"
+                        Class="my-6" @onclick="LogIn">
+                            Login
+                        </MudButton>
+
+                    </MudForm>
+                </MudPaper>
+            </MudContainer>
+        </MudItem>
+
+    </MudGrid>
+</MudContainer>
+
+
+
+
+@code {
+    [Inject] NavigationManager NavigationManager { get; set; }
+
+    private string? Password;
+    private string? Email;
+
+    private async Task LogIn(){
+        var result = await authApiService.LogIn(new Communication.Requests.RequestAuth {
+            Email = Email!,
+            Password = Password!
+        });
+        NavigationManager.NavigateTo("/home");
+    }
+}

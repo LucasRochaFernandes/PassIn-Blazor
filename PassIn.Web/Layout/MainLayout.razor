@@ -5,11 +5,23 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
+
 <MudLayout>
     <MudAppBar Style="background-color: #B3AC9E;" Fixed="true" Elevation="2">
-      <MudImage Src="logo.png" Width="80"></MudImage>
+        <MudImage Src="logo.png" Width="80"></MudImage>
+        <MudSpacer />
+        <AuthorizeView>
+            <Authorized>
+                <MudAvatar Color="Color.Default">
+                    <MudIcon Icon="@Icons.Material.Filled.Person"></MudIcon>
+                </MudAvatar>
+                <MudButton Class="ml-4" Href="logout"
+                           Variant="Variant.Outlined"
+                           Color="Color.Default">Logout</MudButton>
+            </Authorized>
+        </AuthorizeView>
     </MudAppBar>
-    <MudDrawer Style="background-color: #E0DED8"  Open="true" ClipMode="DrawerClipMode.Always" Elevation="2">
+    <MudDrawer Style="background-color: #E0DED8" Open="true" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu></NavMenu>
     </MudDrawer>
     <MudMainContent Class="main-content" Style="background-color: #F4F1EB; height: 100vh;">
@@ -18,10 +30,5 @@
         </MudContainer>
     </MudMainContent>
 </MudLayout>
+   
 
-@code {
-    private MudTheme currentTheme = new MudTheme()
-        {
-            PaletteDark = ScreendsoundPallete.CreatePallete
-        };
-}

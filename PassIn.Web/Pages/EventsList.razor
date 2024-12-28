@@ -6,11 +6,13 @@
 
 @inject EventAPIService eventApiService
 
-<h3>Eventos</h3>
-<br />
+<MudStack Class="mt-4 mb-4" Row="true" Justify="Justify.SpaceBetween">
+    <MudText Class="mb-4" Typo="Typo.h4">Eventos cadastrados</MudText>
+    <MudPagination Variant="Variant.Filled" Count="@totalPages" SelectedChanged="PageHasChanged" />
+</MudStack>
 
 <MudGrid>
-    @foreach(var _event in events)
+    @foreach(var _event in eventsPerPage)
     {
         <MudItem xs="3">
             <CardEvent EventJson=_event />
@@ -22,10 +24,31 @@
 
 @code {
     private IList<ResponseEventJson> events = [];
+    private IList<ResponseEventJson> eventsPerPage = [];
+    private int totalPages = 1;
+    private int totalPerPage = 8;
+
+
 
     protected override async Task OnInitializedAsync()
     {
         events = await eventApiService.GetAllEvents();
+        if (events is not null)
+        {
+            events = events.OrderByDescending(a => a.Id).ToList();
+            var totalItens = events.Count();
+            totalPages = Convert.ToInt32(Math.Ceiling((totalItens * 1.0) / totalPerPage));
+            this.PageHasChanged(1);
+        }
+    }
+
+    private void PageHasChanged(int pageNumber)
+    {
+        var index = pageNumber - 1;
+        eventsPerPage = events!
+            .Skip(totalPerPage * index)
+            .Take(totalPerPage)
+            .ToList();
     }
 
  

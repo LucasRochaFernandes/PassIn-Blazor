@@ -5,10 +5,13 @@ using System.Net.Http.Json;
 
 namespace PassIn.Web.Services.Event;
 
-public class EventAPIService : APIService
+public class EventAPIService 
 {
-    public EventAPIService(IHttpClientFactory factory) : base(factory)
+    protected readonly HttpClient _httpClient;
+
+    public EventAPIService(IHttpClientFactory factory)
     {
+        _httpClient = factory.CreateClient("API-Server");
     }
 
     public async Task<IList<ResponseEventJson>> GetAllEvents()
@@ -34,5 +37,19 @@ public class EventAPIService : APIService
         {
             throw new Exception("API connection error");
         }
+    }
+
+    public async Task DeleteEvent(Guid eventId)
+    {
+        var response = await _httpClient.DeleteAsync($"api/Events/{eventId}");
+        if (response.IsSuccessStatusCode)
+        {
+            return;
+        }
+        else
+        {
+            throw new Exception("API connection error");
+        }
+
     }
 }

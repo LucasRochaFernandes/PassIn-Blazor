@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PassIn.Application.UseCases.Attendees.GetAll;
 using PassIn.Communication.Responses;
 
 namespace PassIn.Api.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
+[Authorize]
 public class AttendeesController : ControllerBase
 {
     [HttpGet]

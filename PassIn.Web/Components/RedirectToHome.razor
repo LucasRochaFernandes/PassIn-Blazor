@@ -1,0 +1,12 @@
+﻿@code {
+    protected override void OnInitialized()
+    {
+        
+        if (NavigationManager.Uri == NavigationManager.BaseUri)
+        {
+            NavigationManager.NavigateTo("/home");
+        }
+    }
+
+    [Inject] NavigationManager NavigationManager { get; set; }
+}

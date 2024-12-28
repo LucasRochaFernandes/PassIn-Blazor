@@ -1,18 +1,43 @@
 ﻿@using PassIn.Communication.Responses
+@using PassIn.Web.Components
 
-<MudCard>
-    <MudCardHeader>
-        <CardHeaderContent>
-            <MudText Typo="Typo.h6">@EventJson!.Title</MudText>
+@inject IDialogService DialogService
+
+<MudCard Style="height: 200px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;">
+    <MudCardHeader Style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <CardHeaderContent >
+            <MudText Typo="Typo.h6" Style="display: block;">
+                @EventJson!.Title
+            </MudText>
         </CardHeaderContent>
     </MudCardHeader>
-    <MudCardContent>
-        <MudText Typo="Typo.h6">@EventJson!.Details</MudText>
+    <MudCardContent Style="flex-grow: 1; overflow: hidden;">
+        <MudText Typo="Typo.subtitle1" Style="display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 3;">
+            @EventJson!.Details
+        </MudText>
     </MudCardContent>
+    <MudCardActions Style="padding-top: 8px;">
+        <MudButton Color="Color.Primary" OnClick="OpenDetailsDialog">Detalhes</MudButton>
+    </MudCardActions>
 </MudCard>
+
+
+
 
 @code {
     [Parameter]
     public ResponseEventJson? EventJson { get; set; }
+
+    private async Task OpenDetailsDialog()
+    {
+        var parameters = new DialogParameters
+        {
+            { "TitleEvent", EventJson!.Title },
+            { "DetailsEvent", EventJson!.Details },
+            { "EventId", EventJson.Id}
+        };
+
+        await DialogService.Show<EventDialog>("Detalhes do Evento", parameters).Result;
+    }
 
 }
