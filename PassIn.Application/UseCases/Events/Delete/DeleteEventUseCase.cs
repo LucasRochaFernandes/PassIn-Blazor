@@ -8,8 +8,22 @@ public class DeleteEventUseCase(PassInDbContext dbContext)
 
     public void Execute(Guid eventId)
     {
-        var entity = _dbContext.Events.Find(eventId) ?? throw new NotFoundException("Event Not Found");
-        _dbContext.Events.Remove(entity);
-        _dbContext.SaveChanges();
+        using (var transaction = _dbContext.Database.BeginTransaction())
+        {
+            try
+            {
+                var entity = _dbContext.Events.Find(eventId) ?? throw new NotFoundException("Event Not Found");
+                _dbContext.Events.Remove(entity);
+                _dbContext.SaveChanges();
+                transaction.Commit();
+                return;
+            }
+            catch (Exception)
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
+        
     }
 }
