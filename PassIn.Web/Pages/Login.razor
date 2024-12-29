@@ -1,6 +1,8 @@
 ﻿@page "/login"
 @layout EmptyLayout
 
+@attribute [AllowAnonymous]
+
 @inject AuthAPIService authApiService;
 
 <MudContainer Style="min-width: 100vw; min-height: 100vh; display: flex; justify-content: center; align-items: center; background-color: #E0DED8;">
@@ -38,16 +40,28 @@
 
 
 @code {
-    [Inject] NavigationManager NavigationManager { get; set; }
+    [Inject] 
+    NavigationManager NavigationManager { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string? ReturnUrl { get; set; }
+
 
     private string? Password;
     private string? Email;
+
 
     private async Task LogIn(){
         var result = await authApiService.LogIn(new Communication.Requests.RequestAuth {
             Email = Email!,
             Password = Password!
         });
-        NavigationManager.NavigateTo("/home");
+        if(result.Success){
+            if(ReturnUrl is not null){
+                NavigationManager.NavigateTo(ReturnUrl);
+            } else {
+                NavigationManager.NavigateTo("/home");
+            }
+        }
     }
 }
